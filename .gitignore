@@ -14,8 +14,7 @@ env/
 # VS Code
 .vscode/
 
-# Generated blogs
-*.md
+outputs/
 
 # macOS
 .DS_Store   
