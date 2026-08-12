@@ -1,7 +1,6 @@
 # AI Blog Generator - direct runtime dependencies (curated, pinned).
 # Transitive deps (langchain-core internals, etc.) resolve automatically.
 # Dev/UI/DB deps are added in their respective phases:
-#   Phase 2 (DB):  sqlalchemy, psycopg2-binary
 #   Phase 3 (UI):  streamlit, streamlit-mermaid
 #   Phase 5 (test): pytest
 
@@ -17,3 +16,8 @@ langchain-tavily==0.2.18
 pydantic==2.13.4
 python-dotenv==1.2.2
 requests==2.32.5
+
+# Database (Phase 2) — psycopg2 driver only needed for Postgres (container);
+# local dev + tests use SQLite via the stdlib sqlite3 module.
+SQLAlchemy==2.0.36
+psycopg2-binary==2.9.10

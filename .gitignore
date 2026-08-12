@@ -16,6 +16,13 @@ env/
 
 outputs/
 
+# Local SQLite dev database (Postgres is used in the container)
+*.db
+*.sqlite3
+
+# pytest
+.pytest_cache/
+
 # macOS
 .DS_Store
 
