@@ -17,4 +17,8 @@ env/
 outputs/
 
 # macOS
-.DS_Store   
+.DS_Store
+
+# Local planning / working notes (not for the repo)
+implementation_plan.md
+memory.md
