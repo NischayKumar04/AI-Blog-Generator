@@ -41,6 +41,9 @@ def test_generate_and_save_success(db, monkeypatch):
     gen = service.generate_and_save("Self Attention")
 
     assert gen.status == "completed"
+    # no provider/model passed -> records the Groq default selection
+    assert gen.llm_provider == "groq"
+    assert gen.llm_model == "llama-3.3-70b-versatile"
     assert gen.blog_title == "Self Attention Explained"
     assert gen.blog_kind == "explainer"
     assert gen.mode == "closed_book"
@@ -61,7 +64,7 @@ def test_generate_and_save_success(db, monkeypatch):
 def test_generate_and_save_forwards_progress(db, monkeypatch):
     calls = []
 
-    def fake_run(topic, *, on_progress=None, output_path=None):
+    def fake_run(topic, *, provider=None, model=None, on_progress=None, output_path=None):
         if on_progress:
             on_progress("router", "Routing")
         return _fake_state()

@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 from typing import Any, Callable, Optional
 
 from core import run
+from core.llm import DEFAULT_SELECTION
 
 from . import crud
 from .connection import init_db
@@ -63,6 +64,8 @@ def _extract_fields(state: dict) -> dict:
 def generate_and_save(
     topic: str,
     *,
+    provider: Optional[str] = None,
+    model: Optional[str] = None,
     on_progress: Optional[Callable[[str, str], None]] = None,
     output_path: Optional[str] = None,
     ensure_schema: bool = True,
@@ -72,6 +75,10 @@ def generate_and_save(
 
     Args:
         topic: the blog topic.
+        provider: optional LLM provider id; paired with ``model`` it selects the
+            model for this run. Both default to ``DEFAULT_SELECTION`` (Groq
+            llama-3.3-70b) and are recorded on the row for later display.
+        model: optional model id paired with ``provider``.
         on_progress: optional phase-level progress callback, forwarded to ``run``.
         output_path: optional path to also write the final markdown to.
         ensure_schema: call ``init_db()`` first (idempotent). Set False if the
@@ -85,11 +92,20 @@ def generate_and_save(
     if ensure_schema:
         init_db()
 
+    prov, mdl = (provider, model) if (provider and model) else DEFAULT_SELECTION
+
     gen = crud.create_generation(topic, status="running")
+    crud.update_generation(gen.id, llm_provider=prov, llm_model=mdl)
     start = time.perf_counter()
 
     try:
-        state = run(topic, on_progress=on_progress, output_path=output_path)
+        state = run(
+            topic,
+            provider=prov,
+            model=mdl,
+            on_progress=on_progress,
+            output_path=output_path,
+        )
     except Exception as exc:  # persist the failure, then optionally re-raise
         log.exception("Generation failed for topic %r", topic)
         failed = crud.update_generation(

@@ -81,3 +81,12 @@ def test_delete_generation(db):
     assert crud.get_generation(gen.id) is None
     # deleting again reports False
     assert crud.delete_generation(gen.id) is False
+
+
+def test_delete_all_generations(db):
+    for i in range(3):
+        crud.create_generation(f"topic-{i}")
+    assert crud.delete_all_generations() == 3
+    assert crud.list_generations() == []
+    # clearing an already-empty table removes nothing
+    assert crud.delete_all_generations() == 0

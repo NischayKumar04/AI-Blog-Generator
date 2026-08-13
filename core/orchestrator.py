@@ -9,7 +9,7 @@ from __future__ import annotations
 from langchain_core.messages import SystemMessage, HumanMessage
 from langgraph.types import Send
 
-from .llm import get_llm
+from .llm import invoke_structured
 from .schemas import Plan
 from .state import State
 
@@ -51,12 +51,11 @@ Output must strictly match the Plan schema.
 
 
 def orchestrator_node(state: State) -> dict:
-    planner = get_llm().with_structured_output(Plan)
-
     evidence = state.get("evidence", [])
     mode = state.get("mode", "closed_book")
 
-    plan = planner.invoke(
+    plan = invoke_structured(
+        Plan,
         [
             SystemMessage(content=ORCH_SYSTEM),
             HumanMessage(
@@ -67,7 +66,7 @@ def orchestrator_node(state: State) -> dict:
                     f"{[e.model_dump() for e in evidence][:16]}"
                 )
             ),
-        ]
+        ],
     )
 
     return {"plan": plan}

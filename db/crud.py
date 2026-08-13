@@ -11,7 +11,7 @@ from __future__ import annotations
 import uuid
 from typing import List, Optional, Union
 
-from sqlalchemy import select
+from sqlalchemy import delete, func, select
 
 from .connection import session_scope
 from .models import BlogGeneration
@@ -83,3 +83,11 @@ def delete_generation(gen_id: IdType) -> bool:
             return False
         session.delete(gen)
         return True
+
+
+def delete_all_generations() -> int:
+    """Delete every generation row. Returns the number of rows removed."""
+    with session_scope() as session:
+        count = session.scalar(select(func.count()).select_from(BlogGeneration)) or 0
+        session.execute(delete(BlogGeneration))
+        return int(count)

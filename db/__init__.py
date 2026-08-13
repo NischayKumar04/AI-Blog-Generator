@@ -19,6 +19,7 @@ from .connection import (
 )
 from .crud import (
     create_generation,
+    delete_all_generations,
     delete_generation,
     get_generation,
     list_generations,
@@ -40,4 +41,5 @@ __all__ = [
     "list_generations",
     "update_generation",
     "delete_generation",
+    "delete_all_generations",
 ]

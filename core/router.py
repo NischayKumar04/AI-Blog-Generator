@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from langchain_core.messages import SystemMessage, HumanMessage
 
-from .llm import get_llm
+from .llm import invoke_structured
 from .schemas import RouterDecision
 from .state import State
 
@@ -33,12 +33,12 @@ If needs_research=true:
 
 def router_node(state: State) -> dict:
     topic = state["topic"]
-    decider = get_llm().with_structured_output(RouterDecision)
-    decision = decider.invoke(
+    decision = invoke_structured(
+        RouterDecision,
         [
             SystemMessage(content=ROUTER_SYSTEM),
             HumanMessage(content=f"Topic: {topic}"),
-        ]
+        ],
     )
 
     return {

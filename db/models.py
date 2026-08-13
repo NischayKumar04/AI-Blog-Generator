@@ -38,6 +38,8 @@ class BlogGeneration(Base):
 
     # inputs
     topic: Mapped[str] = mapped_column(Text, nullable=False)
+    llm_provider: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    llm_model: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     # routing / plan summary (denormalized for list views)
     mode: Mapped[Optional[str]] = mapped_column(Text, nullable=True)

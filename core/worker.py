@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from langchain_core.messages import SystemMessage, HumanMessage
 
-from .llm import get_llm
+from .llm import get_llm, message_text
 from .schemas import Task, Plan, EvidenceItem
 
 
@@ -61,7 +61,7 @@ def worker_node(payload: dict) -> dict:
             for e in evidence[:20]
         )
 
-    section_md = get_llm().invoke(
+    response = get_llm().invoke(
         [
             SystemMessage(content=WORKER_SYSTEM),
             HumanMessage(
@@ -85,6 +85,8 @@ def worker_node(payload: dict) -> dict:
                 )
             ),
         ]
-    ).content.strip()
+    )
+    # .content is a str for most providers but a list of blocks for Gemini 3.x
+    section_md = message_text(response).strip()
 
     return {"sections": [(task.id, section_md)]}

@@ -1,0 +1,18 @@
+# Streamlit configuration.
+# The [theme] block is the officially supported way to theme the app — it
+# survives Streamlit upgrades (unlike scraping internal CSS class names).
+# ui/theme.py layers a little extra polish on top.
+
+[theme]
+base = "dark"
+primaryColor = "#e94560"
+backgroundColor = "#0f0f1a"
+secondaryBackgroundColor = "#1a1a2e"
+textColor = "#e6e6f0"
+font = "sans serif"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false

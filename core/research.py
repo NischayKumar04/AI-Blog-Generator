@@ -10,7 +10,7 @@ from typing import List
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_tavily import TavilySearch
 
-from .llm import get_llm
+from .llm import invoke_structured
 from .schemas import EvidencePack
 from .state import State
 
@@ -75,12 +75,12 @@ def research_node(state: State) -> dict:
     if not raw_results:
         return {"evidence": []}
 
-    extractor = get_llm().with_structured_output(EvidencePack)
-    pack = extractor.invoke(
+    pack = invoke_structured(
+        EvidencePack,
         [
             SystemMessage(content=RESEARCH_SYSTEM),
             HumanMessage(content=f"Raw results:\n{raw_results}"),
-        ]
+        ],
     )
 
     # Deduplicate by URL

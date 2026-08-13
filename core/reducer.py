@@ -18,7 +18,7 @@ import logging
 from langchain_core.messages import SystemMessage, HumanMessage
 from langgraph.graph import StateGraph, START, END
 
-from .llm import get_llm
+from .llm import invoke_structured
 from .mermaid_utils import _clean_mermaid, _mermaid_ok
 from .schemas import GlobalDiagramPlan
 from .state import State
@@ -72,24 +72,32 @@ Return strictly GlobalDiagramPlan.
 
 
 def decide_images(state: State) -> dict:
-    planner = get_llm().with_structured_output(GlobalDiagramPlan)
     merged_md = state["merged_md"]
     plan = state["plan"]
     assert plan is not None
 
-    diagram_plan = planner.invoke(
-        [
-            SystemMessage(content=DECIDE_DIAGRAMS_SYSTEM),
-            HumanMessage(
-                content=(
-                    f"Blog kind: {plan.blog_kind}\n"
-                    f"Topic: {state['topic']}\n\n"
-                    "Insert placeholders + propose Mermaid diagrams.\n\n"
-                    f"{merged_md}"
-                )
-            ),
-        ]
-    )
+    try:
+        diagram_plan = invoke_structured(
+            GlobalDiagramPlan,
+            [
+                SystemMessage(content=DECIDE_DIAGRAMS_SYSTEM),
+                HumanMessage(
+                    content=(
+                        f"Blog kind: {plan.blog_kind}\n"
+                        f"Topic: {state['topic']}\n\n"
+                        "Insert placeholders + propose Mermaid diagrams.\n\n"
+                        f"{merged_md}"
+                    )
+                ),
+            ],
+        )
+    except Exception:
+        # Diagrams are an enhancement, not a requirement. This node asks the
+        # model to echo the entire blog back as one escaped-JSON field, which
+        # weaker models (notably Groq's llama-3.1-8b) can't do reliably. Rather
+        # than fail the whole run, ship the blog without diagrams.
+        logger.warning("Diagram planning failed; continuing without diagrams", exc_info=True)
+        return {"md_with_placeholders": merged_md, "diagram_specs": []}
 
     return {
         "md_with_placeholders": diagram_plan.md_with_placeholders,

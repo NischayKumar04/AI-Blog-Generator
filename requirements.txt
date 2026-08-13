@@ -1,7 +1,6 @@
 # AI Blog Generator - direct runtime dependencies (curated, pinned).
 # Transitive deps (langchain-core internals, etc.) resolve automatically.
 # Dev/UI/DB deps are added in their respective phases:
-#   Phase 3 (UI):  streamlit, streamlit-mermaid
 #   Phase 5 (test): pytest
 
 # Orchestration
@@ -10,6 +9,7 @@ langgraph==1.2.5
 # LLM + integrations
 langchain-core==1.5.3
 langchain-groq==1.1.3
+langchain-google-genai==4.3.3
 langchain-tavily==0.2.18
 
 # Schemas / config / HTTP
@@ -21,3 +21,7 @@ requests==2.32.5
 # local dev + tests use SQLite via the stdlib sqlite3 module.
 SQLAlchemy==2.0.36
 psycopg2-binary==2.9.10
+
+# Web UI (Phase 3) — Mermaid is rendered via inlined mermaid.js in a
+# components.html iframe, so no extra component package is needed.
+streamlit==1.61.1

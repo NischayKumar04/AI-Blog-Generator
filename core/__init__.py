@@ -12,7 +12,13 @@ The multi-agent LangGraph pipeline:
 from __future__ import annotations
 
 from .graph import build_graph, get_graph
-from .llm import get_llm, reset_llm
+from .llm import (
+    AVAILABLE_MODELS,
+    DEFAULT_SELECTION,
+    get_llm,
+    reset_llm,
+    set_active_llm,
+)
 from .runner import run, PHASE_LABELS, PHASE_SEQUENCE
 from .schemas import (
     Task,
@@ -31,6 +37,9 @@ __all__ = [
     "get_graph",
     "get_llm",
     "reset_llm",
+    "set_active_llm",
+    "AVAILABLE_MODELS",
+    "DEFAULT_SELECTION",
     "PHASE_LABELS",
     "PHASE_SEQUENCE",
     "State",
