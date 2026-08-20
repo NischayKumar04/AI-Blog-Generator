@@ -1,0 +1,32 @@
+services:
+  app:
+    build: .
+    image: ai-blog-generator
+    ports:
+      - "8501:8501"
+    env_file: .env                       # GROQ_API_KEY, GOOGLE_API_KEY, TAVILY_API_KEY
+    environment:
+      # Injected here (wins over env_file) so the app always targets the db service.
+      DATABASE_URL: postgresql://bloggen:bloggen@db:5432/bloggen
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: bloggen
+      POSTGRES_PASSWORD: bloggen
+      POSTGRES_DB: bloggen
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # ports: ["5432:5432"]               # uncomment for host access to the DB
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bloggen -d bloggen"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

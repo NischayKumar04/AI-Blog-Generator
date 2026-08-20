@@ -1,0 +1,19 @@
+# Metadata + tooling config only. requirements.txt is the pinned install
+# source used by the Dockerfile; this file does not duplicate the pins.
+[project]
+name = "ai-blog-generator"
+version = "0.4.0"
+description = "Multi-agent technical blog generator (LangGraph + Streamlit) with research and validated Mermaid diagrams."
+readme = "readme.md"
+requires-python = ">=3.10"
+authors = [{ name = "Nischay Kumar" }]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.urls]
+Repository = "https://github.com/NischayKumar04/AI-Blog-Generator"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
