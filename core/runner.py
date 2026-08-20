@@ -57,7 +57,7 @@ def run(
         topic: the blog topic.
         provider: optional LLM provider (e.g. ``"groq"``, ``"google"``). When
             given with ``model``, becomes the active selection for every node in
-            this run; otherwise the env default (Groq llama-3.3-70b) is used.
+            this run; otherwise the env default (Groq gpt-oss-120b) is used.
         model: optional model id paired with ``provider``.
         on_progress: optional callback ``(node_name, label)`` fired as each node
             completes. Fires multiple times for ``"worker"`` (parallel fan-out);

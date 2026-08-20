@@ -43,7 +43,7 @@ def test_generate_and_save_success(db, monkeypatch):
     assert gen.status == "completed"
     # no provider/model passed -> records the Groq default selection
     assert gen.llm_provider == "groq"
-    assert gen.llm_model == "llama-3.3-70b-versatile"
+    assert gen.llm_model == "openai/gpt-oss-120b"
     assert gen.blog_title == "Self Attention Explained"
     assert gen.blog_kind == "explainer"
     assert gen.mode == "closed_book"

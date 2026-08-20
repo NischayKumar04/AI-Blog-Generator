@@ -9,6 +9,9 @@
 ![Postgres](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 
+**▶ Live demo:** **[ai-blog-generator-k2rx.onrender.com](https://ai-blog-generator-k2rx.onrender.com)**
+&nbsp;·&nbsp; *free tier — the first load may take ~30–60s to wake the container.*
+
 Give it a topic. It decides whether the topic needs fresh web research, plans the
 post into sections, writes those sections **in parallel** with independent LLM
 workers, then merges them and generates **Mermaid diagrams** — each validated
@@ -120,7 +123,7 @@ All configuration is via environment variables in `.env` (see `.env.example`):
 | `LLM_MAX_RETRIES` | optional | Provider retry count on rate limits (default `6`). |
 | `PIPELINE_MAX_CONCURRENCY` | optional | Max parallel section workers (default `2`). |
 
-**Models available in the UI:** Groq `llama-3.3-70b` (default), Google
+**Models available in the UI:** Groq `gpt-oss-120b` (default), Google
 `gemini-3.1-flash-lite`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`.
 
 ---
@@ -169,7 +172,7 @@ Blog/
 | Layer | Choice |
 | --- | --- |
 | Orchestration | LangGraph |
-| LLMs | Groq (Llama 3.3 70B), Google Gemini — via LangChain |
+| LLMs | Groq (gpt-oss-120b), Google Gemini — via LangChain |
 | Research | Tavily |
 | Diagrams | Mermaid, validated via kroki |
 | Schemas | Pydantic v2 |
