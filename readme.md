@@ -123,7 +123,7 @@ All configuration is via environment variables in `.env` (see `.env.example`):
 | `LLM_MAX_RETRIES` | optional | Provider retry count on rate limits (default `6`). |
 | `PIPELINE_MAX_CONCURRENCY` | optional | Max parallel section workers (default `2`). |
 
-**Models available in the UI:** Groq `gpt-oss-120b` (default), Google
+**Models available in the UI:** Groq `gpt-oss-20b` (default) and `gpt-oss-120b`, Google
 `gemini-3.1-flash-lite`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`.
 
 ---
@@ -172,7 +172,7 @@ Blog/
 | Layer | Choice |
 | --- | --- |
 | Orchestration | LangGraph |
-| LLMs | Groq (gpt-oss-120b), Google Gemini — via LangChain |
+| LLMs | Groq (gpt-oss-20b / 120b), Google Gemini — via LangChain |
 | Research | Tavily |
 | Diagrams | Mermaid, validated via kroki |
 | Schemas | Pydantic v2 |

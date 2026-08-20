@@ -59,7 +59,7 @@ def render_model_picker(disabled: bool = False) -> tuple[str, str]:
     """Render the LLM provider+model dropdown. Returns ``(provider, model)``.
 
     Options come from ``core.llm.AVAILABLE_MODELS`` (single source of truth); the
-    first entry — Groq gpt-oss-120b — is the default selection.
+    first entry — Groq gpt-oss-20b — is the default selection.
     """
     labels = [label for label, _, _ in AVAILABLE_MODELS]
     choice = st.selectbox(

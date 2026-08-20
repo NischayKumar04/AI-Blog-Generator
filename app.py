@@ -34,6 +34,8 @@ if "generating" not in st.session_state:
     st.session_state.generating = False
 if "pending" not in st.session_state:
     st.session_state.pending = None
+if "run_error" not in st.session_state:
+    st.session_state.run_error = None
 
 
 def _run_generation(topic: str, provider: str, model: str) -> str:
@@ -95,10 +97,17 @@ if st.session_state.generating and st.session_state.pending:
     try:
         new_id = _run_generation(job["topic"], job["provider"], job["model"])
         st.session_state.selected_id = new_id
+        st.session_state.run_error = None
+    except Exception as exc:  # non-pipeline failure (e.g. DB write) — never crash the page
+        st.session_state.run_error = str(exc)
     finally:
         st.session_state.pending = None
         st.session_state.generating = False
     st.rerun()
+
+# surface an unexpected (non-pipeline) error from the last run attempt
+if st.session_state.get("run_error"):
+    st.error(f"Could not complete the generation: {st.session_state.run_error}")
 
 # ---- display selected / most-recent generation ----
 selected_id = st.session_state.get("selected_id")
@@ -108,7 +117,14 @@ if selected_id:
         st.warning("That generation no longer exists.")
     elif gen.status == "failed":
         render_meta(gen)
-        st.error(f"Generation failed: {gen.error_message}")
+        msg = gen.error_message or "Unknown error."
+        st.error(f"Generation failed: {msg}")
+        low = msg.lower()
+        if any(k in low for k in ("rate", "429", "quota", "token limit", "tokens per")):
+            st.info(
+                "This looks like a rate/token limit. Wait a minute and try again, "
+                "or pick a different model from the dropdown above."
+            )
     elif gen.final_markdown:
         st.markdown(f"## {gen.blog_title or gen.topic}")
         render_meta(gen)
