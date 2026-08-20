@@ -41,9 +41,9 @@ def test_generate_and_save_success(db, monkeypatch):
     gen = service.generate_and_save("Self Attention")
 
     assert gen.status == "completed"
-    # no provider/model passed -> records the Groq default selection
-    assert gen.llm_provider == "groq"
-    assert gen.llm_model == "openai/gpt-oss-20b"
+    # no provider/model passed -> records the Google default selection
+    assert gen.llm_provider == "google"
+    assert gen.llm_model == "gemini-3.1-flash-lite"
     assert gen.blog_title == "Self Attention Explained"
     assert gen.blog_kind == "explainer"
     assert gen.mode == "closed_book"

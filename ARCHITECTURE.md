@@ -20,7 +20,7 @@ into one end-to-end flow. Part 5 is an operations cheat-sheet.
 | **Base image** | `python:3.10-slim` | Dockerfile | Small Python 3.10 image (matches the local venv) |
 | **Web app** | Streamlit | `1.61.1` (served by Uvicorn on `:8501`) | Fast Python UI; no separate frontend needed |
 | **Pipeline engine** | LangGraph | `1.2.5` | Models the multi-agent flow as a state graph with fan-out |
-| **LLM (default)** | Groq `openai/gpt-oss-20b` | `langchain-groq` | Fast, free-tier, good quality |
+| **LLM (default)** | Google `gemini-3.1-flash-lite` | `langchain-google-genai` | Reliable free-tier limits |
 | **LLM (alternates)** | Google Gemini (3.1-flash-lite, 2.5-flash, 2.5-flash-lite) | `langchain-google-genai` | Escape hatch when Groq rate-limits |
 | **Web research** | Tavily | `langchain-tavily` | Fetches fresh evidence when a topic needs it |
 | **Diagram validation** | kroki.io | HTTP call in the reducer | Confirms Mermaid actually renders before shipping it |

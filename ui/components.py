@@ -59,7 +59,7 @@ def render_model_picker(disabled: bool = False) -> tuple[str, str]:
     """Render the LLM provider+model dropdown. Returns ``(provider, model)``.
 
     Options come from ``core.llm.AVAILABLE_MODELS`` (single source of truth); the
-    first entry — Groq gpt-oss-20b — is the default selection.
+    first entry — Google gemini-3.1-flash-lite — is the default selection.
     """
     labels = [label for label, _, _ in AVAILABLE_MODELS]
     choice = st.selectbox(
@@ -68,8 +68,8 @@ def render_model_picker(disabled: bool = False) -> tuple[str, str]:
         format_func=lambda i: labels[i],
         index=0,
         disabled=disabled,
-        help="Pick the LLM used for this run. Groq is the default; switch to "
-        "Google Gemini if you hit Groq's rate limits.",
+        help="Pick the LLM used for this run. Google Gemini is the default; the "
+        "Groq models are faster but rate-limit quickly on the free tier.",
     )
     _, provider, model = AVAILABLE_MODELS[choice]
     return provider, model

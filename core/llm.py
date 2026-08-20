@@ -3,7 +3,7 @@
 `get_llm()` builds a chat model for a ``(provider, model)`` pair and caches it by
 key, so importing pipeline modules needs no API key. Nodes call ``get_llm()``
 with no args and resolve the *active* selection set by ``set_active_llm()``
-(falling back to the env default — Groq's gpt-oss-20b).
+(falling back to the env default — Google's gemini-3.1-flash-lite).
 
 Resilience: every model is built with ``max_retries`` so the provider SDK
 auto-waits on 429 rate limits (honoring ``Retry-After``) instead of hard-failing.
@@ -26,9 +26,9 @@ load_dotenv()
 # (label, provider, model) — the single source of truth for the UI dropdown.
 # The first entry is the default selection.
 AVAILABLE_MODELS = [
-    ("Groq · gpt-oss-20b (default)", "groq", "openai/gpt-oss-20b"),
+    ("Google · gemini-3.1-flash-lite (default)", "google", "gemini-3.1-flash-lite"),
+    ("Groq · gpt-oss-20b", "groq", "openai/gpt-oss-20b"),
     ("Groq · gpt-oss-120b", "groq", "openai/gpt-oss-120b"),
-    ("Google · gemini-3.1-flash-lite", "google", "gemini-3.1-flash-lite"),
     ("Google · gemini-2.5-flash", "google", "gemini-2.5-flash"),
     ("Google · gemini-2.5-flash-lite", "google", "gemini-2.5-flash-lite"),
 ]

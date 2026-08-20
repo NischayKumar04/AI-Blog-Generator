@@ -30,8 +30,9 @@ comes up with one Docker command.
   LangGraph `Send`, then merged back in order.
 - **📊 Validated Mermaid diagrams** — proposed diagrams are cleaned, validated via the
   [kroki](https://kroki.io) renderer, and only shipped if they actually render.
-- **🔁 Multi-provider LLMs** — switch between **Groq** (default, fast) and **Google
-  Gemini** from the UI, with automatic repair of malformed structured output.
+- **🔁 Multi-provider LLMs** — switch between **Google Gemini** (default) and **Groq**
+  (faster, but rate-limits on the free tier) from the UI, with automatic repair of
+  malformed structured output.
 - **💾 Persistent history** — every generation is saved (provider, timing, word/section
   counts, success/failure) and browsable in a sidebar. SQLite locally, Postgres in Docker.
 - **🐳 One-command deploy** — `docker compose up` brings up the app + Postgres, wired
@@ -115,16 +116,16 @@ All configuration is via environment variables in `.env` (see `.env.example`):
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `GROQ_API_KEY` | ✅ | Default LLM provider (text generation). |
+| `GOOGLE_API_KEY` | ✅ | Default LLM provider (Gemini text generation). |
 | `TAVILY_API_KEY` | ✅ | Web research. |
-| `GOOGLE_API_KEY` | optional | Enables the Google Gemini models in the picker. |
+| `GROQ_API_KEY` | optional | Groq models (`gpt-oss-*`) — faster, but rate-limit on the free tier. |
 | `DATABASE_URL` | optional | Postgres URL. Unset → local SQLite. Docker sets this automatically. |
 | `LLM_TEMPERATURE` | optional | Sampling temperature (default `0`). |
 | `LLM_MAX_RETRIES` | optional | Provider retry count on rate limits (default `6`). |
 | `PIPELINE_MAX_CONCURRENCY` | optional | Max parallel section workers (default `2`). |
 
-**Models available in the UI:** Groq `gpt-oss-20b` (default) and `gpt-oss-120b`, Google
-`gemini-3.1-flash-lite`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`.
+**Models available in the UI:** Google `gemini-3.1-flash-lite` (default),
+`gemini-2.5-flash`, `gemini-2.5-flash-lite`; Groq `gpt-oss-20b`, `gpt-oss-120b`.
 
 ---
 
@@ -172,7 +173,7 @@ Blog/
 | Layer | Choice |
 | --- | --- |
 | Orchestration | LangGraph |
-| LLMs | Groq (gpt-oss-20b / 120b), Google Gemini — via LangChain |
+| LLMs | Google Gemini (default), Groq (gpt-oss 20b/120b) — via LangChain |
 | Research | Tavily |
 | Diagrams | Mermaid, validated via kroki |
 | Schemas | Pydantic v2 |

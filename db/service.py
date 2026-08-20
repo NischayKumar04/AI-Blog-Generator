@@ -77,7 +77,7 @@ def generate_and_save(
         topic: the blog topic.
         provider: optional LLM provider id; paired with ``model`` it selects the
             model for this run. Both default to ``DEFAULT_SELECTION`` (Groq
-            gpt-oss-20b) and are recorded on the row for later display.
+            gemini-3.1-flash-lite) and are recorded on the row for later display.
         model: optional model id paired with ``provider``.
         on_progress: optional phase-level progress callback, forwarded to ``run``.
         output_path: optional path to also write the final markdown to.
